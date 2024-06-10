@@ -5,7 +5,12 @@ const multer = require("multer");
 const cors = require("cors");
 require("dotenv").config();
 
-const serviceAccount = require("./selfie_snake_firebase_key.json");
+const serviceAccount = JSON.parse(
+  Buffer.from(
+    process.env.FIREBASE_SERVICE_ACCOUNT_KEY_BASE64,
+    "base64"
+  ).toString("utf8")
+);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -18,8 +23,6 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 const bucket = admin.storage().bucket();
 

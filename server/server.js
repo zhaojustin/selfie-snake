@@ -19,6 +19,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use(express.static(path.resolve(__dirname, "../client/build")));
+
 const bucket = admin.storage().bucket();
 
 // Example route to fetch data from Firestore

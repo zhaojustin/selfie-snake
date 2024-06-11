@@ -27,7 +27,7 @@ app.use(express.json());
 
 const bucket = admin.storage().bucket();
 
-app.use(express.static(path.join(__dirname, "../client/build")));
+app.use(express.static(path.join(__dirname, "../../client/build")));
 
 app.get("/test", (req, res) => {
   res.send("Welcome to the Selfie Snake API");

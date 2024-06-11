@@ -22,8 +22,6 @@ export default function Home() {
 
       <Button onClick={() => navigate("/create")}>Create a snake!</Button>
       <Button>View my snake</Button>
-
-      {/* <ZigzagPattern imageUrls={images} /> */}
     </VStack>
   );
 }

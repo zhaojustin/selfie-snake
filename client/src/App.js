@@ -12,7 +12,7 @@ import { Footer } from "./Components/Footer";
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <Flex direction="column" minH="100vh">
+      <Flex direction="column" minH="90vh">
         <Container maxW="375px" flex={1} pt={4}>
           {/* content */}
           <Router>

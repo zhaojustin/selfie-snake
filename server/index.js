@@ -3,6 +3,7 @@ const express = require("express");
 const admin = require("firebase-admin");
 const multer = require("multer");
 const cors = require("cors");
+const path = require("path");
 require("dotenv").config();
 
 const serviceAccount = JSON.parse(
@@ -26,7 +27,9 @@ app.use(express.json());
 
 const bucket = admin.storage().bucket();
 
-app.get("/", (req, res) => {
+app.use(express.static(path.join(__dirname, "../client/build")));
+
+app.get("/test", (req, res) => {
   res.send("Welcome to the Selfie Snake API");
 });
 

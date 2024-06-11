@@ -8,16 +8,16 @@ import {
   IconButton,
   Image,
   Input,
-  Progress,
   Spinner,
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { FiCamera, FiCheck } from "react-icons/fi";
+import { FiCamera, FiCheck, FiEdit3 } from "react-icons/fi";
+import { motion } from "framer-motion";
 import axios from "axios";
 import imageCompression from "browser-image-compression";
 
-export const UploadSelfie = ({ setUrl }) => {
+export const UploadSelfie = ({ name, setUrl, onBack }) => {
   const [image, setImage] = useState(null); // image file
   const [loading, setLoading] = useState(false); // loading state
   const [preview, setPreview] = useState(""); // preview image url
@@ -96,34 +96,51 @@ export const UploadSelfie = ({ setUrl }) => {
     );
 
   return (
-    <VStack spacing={5}>
-      {!loading ? (
-        <>
-          <Text fontSize="lg">Start by taking a selfie.</Text>
-          <Input
-            type="file"
-            capture="environment"
-            accept="image/*"
-            onChange={handleChange}
-            display="none"
-            id="file-input"
-          />
-          <label htmlFor="file-input">
-            <IconButton
-              as="span"
-              boxSize={24}
-              icon={<Icon as={FiCamera} fontSize={30} />}
-              isRound
-              mb={4}
-              _hover={{ cursor: "pointer", bg: "blue.100" }}
-            >
-              Upload
-            </IconButton>
-          </label>
-        </>
-      ) : (
-        <Spinner size="lg" m={5} color="brand" />
-      )}
-    </VStack>
+    <motion.div
+      initial={{ opacity: 0, x: 5 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{
+        duration: 0.4,
+        ease: [0.9, 0, 0.3, 1],
+      }}
+    >
+      <VStack spacing={5}>
+        {!loading ? (
+          <>
+            <VStack mb={5}>
+              <HStack _hover={{ cursor: "pointer" }} onClick={onBack}>
+                <Icon as={FiEdit3} color="brand" fontSize="small" />
+                <Text color="brand">{name}</Text>
+              </HStack>
+            </VStack>
+            <Text fontSize="lg" fontWeight="semibold">
+              Start by taking a selfie.
+            </Text>
+            <Input
+              type="file"
+              capture="environment"
+              accept="image/*"
+              onChange={handleChange}
+              display="none"
+              id="file-input"
+            />
+            <label htmlFor="file-input">
+              <IconButton
+                as="span"
+                boxSize={24}
+                icon={<Icon as={FiCamera} fontSize={30} />}
+                isRound
+                mb={4}
+                _hover={{ cursor: "pointer", bg: "blue.100" }}
+              >
+                Upload
+              </IconButton>
+            </label>
+          </>
+        ) : (
+          <Spinner size="lg" m={5} color="brand" />
+        )}
+      </VStack>
+    </motion.div>
   );
 };

@@ -29,10 +29,6 @@ const bucket = admin.storage().bucket();
 
 app.use(express.static(path.join(__dirname, "../../client/build")));
 
-app.get("/test", (req, res) => {
-  res.send("Welcome to the Selfie Snake API");
-});
-
 // Example route to fetch data from Firestore
 app.get("/api/users", async (req, res) => {
   try {

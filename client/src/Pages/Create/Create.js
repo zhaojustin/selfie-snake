@@ -2,6 +2,7 @@ import { Heading, Icon, IconButton, Text, VStack } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { UploadSelfie } from "./UploadSelfie";
 import { useEffect, useState } from "react";
+import { InputName } from "./InputName";
 
 export default function Create() {
   const navigate = useNavigate();
@@ -13,7 +14,9 @@ export default function Create() {
   ];
 
   const [url, setUrl] = useState("");
-  const [stage, setStage] = useState("upload");
+  const [username, setUsername] = useState("");
+
+  const [stage, setStage] = useState("inputName");
 
   useEffect(() => {
     if (url !== "") setStage("");
@@ -37,8 +40,20 @@ export default function Create() {
         </Text>
       </VStack>
 
-      {stage == "upload" && <UploadSelfie setUrl={setUrl} />}
-      {stage == ""}
+      {stage == "inputName" && (
+        <InputName
+          name={username}
+          setName={setUsername}
+          onNextStage={() => setStage("upload")}
+        />
+      )}
+      {stage == "upload" && (
+        <UploadSelfie
+          name={username}
+          setUrl={setUrl}
+          onBack={() => setStage("inputName")}
+        />
+      )}
 
       {/* <ZigzagPattern imageUrls={images} /> */}
     </VStack>

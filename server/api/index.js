@@ -29,17 +29,6 @@ const bucket = admin.storage().bucket();
 
 app.use(express.static(path.join(__dirname, "../../client/build")));
 
-// Example route to fetch data from Firestore
-app.get("/api/users", async (req, res) => {
-  try {
-    const usersSnapshot = await db.collection("users").get();
-    const users = usersSnapshot.docs.res.status(200).send(usersSnapshot);
-    console.log(users);
-  } catch (error) {
-    res.status(500).send("Error fetching snakes:", error);
-  }
-});
-
 // file upload
 const upload = multer({ storage: multer.memoryStorage() });
 app.post("/api/upload", upload.single("file"), async (req, res) => {
@@ -70,6 +59,43 @@ app.post("/api/upload", upload.single("file"), async (req, res) => {
     blobStream.end(file.buffer);
   } catch (error) {
     res.status(500).send({ message: error.message });
+  }
+});
+
+// users
+app.post("/api/addUser", async (req, res) => {
+  try {
+    const { name, imageUrl } = req.body;
+    if (!name || !imageUrl)
+      return res.status(400).send("Name and imageUrl are required");
+
+    const usersRef = db.collection("users");
+    await usersRef.doc(name).set({
+      imageUrl: imageUrl,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+    return res.status(201).json({ success: true, message: "Set user data" });
+  } catch (error) {
+    console.error("Error adding or finding user: ", error);
+    return res.status(500).send("Internal Server Error");
+  }
+});
+
+app.post("/api/getUser", async (req, res) => {
+  try {
+    const { name } = req.body;
+
+    if (!name) {
+      return res.status(400).send("Name is required");
+    }
+
+    const usersRef = db.collection("users").doc(name);
+    const doc = await usersRef.get();
+    if (!doc.exists) return res.status(404).send("User not found");
+    else return res.status(200).json(doc.data());
+  } catch (error) {
+    console.error("Error checking user: ", error);
+    return res.status(500).send("Internal Server Error");
   }
 });
 

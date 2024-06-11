@@ -16,8 +16,9 @@ import { FiCamera, FiCheck, FiEdit3 } from "react-icons/fi";
 import { motion } from "framer-motion";
 import axios from "axios";
 import imageCompression from "browser-image-compression";
+import { addUser } from "../../api/users";
 
-export const UploadSelfie = ({ name, setUrl, onBack }) => {
+export const UploadSelfie = ({ name, setUrl, onBack, onNext }) => {
   const [image, setImage] = useState(null); // image file
   const [loading, setLoading] = useState(false); // loading state
   const [preview, setPreview] = useState(""); // preview image url
@@ -61,7 +62,13 @@ export const UploadSelfie = ({ name, setUrl, onBack }) => {
         },
       });
       setUrl(response.data.fileUrl);
-      setLoading(false);
+
+      // create user
+      const createUserResponse = await addUser(name, response.data.fileUrl);
+      if (createUserResponse.success) {
+        setLoading(false);
+        onNext();
+      } else throw new Error("Something went wrong while uploading image.");
     } catch (error) {
       console.error("Error uploading the file:", error);
     }

@@ -57,7 +57,7 @@ export const InputName = ({ name, setName, onNextStage }) => {
             onChange={(event) => setName(event.target.value)}
           />
           <InputRightElement>
-            {name !== "" && (
+            {name !== "" && !error && (
               <motion.div
                 initial={{ opacity: 0, x: 5 }}
                 animate={{ opacity: 1, x: 0 }}

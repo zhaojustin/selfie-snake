@@ -76,7 +76,7 @@ export const UploadSelfie = ({ name, setUrl, onBack }) => {
 
   if (preview && !loading)
     return (
-      <VStack>
+      <VStack pb={20}>
         <Box shadow="lg" mb={5} borderRadius={15} overflow="hidden">
           <Image src={preview} boxSize={64} objectFit="cover" />
         </Box>

@@ -1,7 +1,7 @@
 import { HStack, Heading, Image, VStack, Text } from "@chakra-ui/react";
 export const Footer = () => {
   return (
-    <VStack spacing={2} pb={20}>
+    <VStack spacing={2} pb={10}>
       <Text fontWeight="medium" size="md">
         Created with ❤️, by the team at
       </Text>

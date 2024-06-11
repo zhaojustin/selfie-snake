@@ -13,7 +13,7 @@ function App() {
   return (
     <ChakraProvider theme={theme}>
       <Flex direction="column" minH="100vh">
-        <Container maxW="375px" borderWidth={1} flex={1} py={4}>
+        <Container maxW="375px" flex={1} pt={4}>
           {/* content */}
           <Router>
             <Routes>

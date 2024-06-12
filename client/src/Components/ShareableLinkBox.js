@@ -36,7 +36,7 @@ export const ShareableLinkBox = () => {
   };
 
   return (
-    <Box my={10} bg="blue.50" p={5} borderRadius={25} mx={10}>
+    <Box my={10} bg="blue.50" p={5} borderRadius={25} mx={5}>
       <Text fontSize="lg" color="brand" fontWeight="semibold">
         Add your friends to the snake!
       </Text>
@@ -49,8 +49,8 @@ export const ShareableLinkBox = () => {
         alignItems="center"
         direction="row"
         mt={2}
-        mx={-1}
-        px={4}
+        mx={-2}
+        px={2}
         py={2}
         overflowX="hidden"
         borderRadius={15}

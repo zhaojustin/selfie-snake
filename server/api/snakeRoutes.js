@@ -108,4 +108,59 @@ router.get("/fetchSnakeWithAncestors/:id", async (req, res) => {
   }
 });
 
+// Get Total Number of Children and Length of the Snake
+router.get("/snakeStats/:snakeId", async (req, res) => {
+  const { snakeId } = req.params;
+
+  try {
+    // Query to get the total number of children
+    const totalChildrenResult = await db.query(
+      `
+        WITH RECURSIVE snake_descendants AS (
+          SELECT id
+          FROM snakes
+          WHERE parent_snake_id = $1
+          UNION ALL
+          SELECT s.id
+          FROM snakes s
+          INNER JOIN snake_descendants sd ON s.parent_snake_id = sd.id
+        )
+        SELECT COUNT(*)
+        FROM snake_descendants;
+      `,
+      [snakeId]
+    );
+
+    const totalChildren = totalChildrenResult.rows[0].count;
+
+    // Query to get the length of the snake
+    const snakeLengthResult = await db.query(
+      `
+        WITH RECURSIVE snake_lineage AS (
+          SELECT id, parent_snake_id
+          FROM snakes
+          WHERE id = $1
+          UNION ALL
+          SELECT s.id, s.parent_snake_id
+          FROM snakes s
+          INNER JOIN snake_lineage sl ON s.id = sl.parent_snake_id
+        )
+        SELECT COUNT(*)
+        FROM snake_lineage;
+      `,
+      [snakeId]
+    );
+
+    const snakeLength = snakeLengthResult.rows[0].count;
+
+    res.status(200).json({
+      totalChildren: parseInt(totalChildren, 10),
+      snakeLength: parseInt(snakeLength, 10),
+    });
+  } catch (err) {
+    console.error("Error fetching snake stats:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 module.exports = router;

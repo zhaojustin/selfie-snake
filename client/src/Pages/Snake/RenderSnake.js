@@ -7,7 +7,6 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
 import { FiPlus } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 

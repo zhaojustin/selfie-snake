@@ -5,11 +5,14 @@ import { RenderSnake } from "./RenderSnake";
 import { TomotimeHeader } from "../../Components/Header";
 import { baseUrl } from "../../api/util";
 import { ShareableLinkBox } from "../../Components/ShareableLinkBox";
+import { SnakeStats } from "./SnakeStats";
 
 export default function Snake({}) {
   const { snakeId } = useParams();
   const [snake, setSnake] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const [snakeStats, setSnakeStats] = useState({});
 
   async function addUserToSnake(parentSnakeId, username) {
     const response = await fetch("/api/addUserToSnake", {
@@ -42,8 +45,22 @@ export default function Snake({}) {
     }
   };
 
+  const fetchSnakeStats = async () => {
+    try {
+      const response = await fetch(`/api/snakeStats/${snakeId}`);
+      if (!response.ok)
+        throw new Error(`Error fetching snake stats: ${response.statusText}`);
+      const data = await response.json();
+      setSnakeStats(data);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to fetch snake stats");
+    }
+  };
+
   useEffect(() => {
     fetchSnake();
+    fetchSnakeStats();
   }, [snakeId]);
 
   if (loading || !snake)
@@ -60,6 +77,8 @@ export default function Snake({}) {
   return (
     <VStack mt={10}>
       <TomotimeHeader />
+
+      <SnakeStats snakeStats={snakeStats} />
 
       <RenderSnake
         snake={snake}

@@ -55,6 +55,7 @@ export const ShareableLinkBox = () => {
         overflowX="hidden"
         borderRadius={15}
         onClick={handleClick}
+        _hover={{ cursor: "pointer" }}
       >
         <Text fontFamily="mono" color="brand" fontSize="xs" pr={5}>
           {shareableLink}

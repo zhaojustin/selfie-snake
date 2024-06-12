@@ -38,7 +38,13 @@ const ImageRow = ({ images, offset, onAdd }) => {
           {image.placeholder ? (
             <Box boxSize="100px" />
           ) : image.firstItem ? (
-            <Box boxSize="100px" bg="blue.50" borderRadius={25} onClick={onAdd}>
+            <Box
+              boxSize="100px"
+              bg="blue.50"
+              borderRadius={25}
+              onClick={onAdd}
+              _hover={{ cursor: "pointer", bg: "blue.100" }}
+            >
               <Center h="100%">
                 <VStack>
                   <Icon as={FiPlus} color="brand" fontSize="2xl" />

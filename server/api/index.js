@@ -4,8 +4,12 @@ const admin = require("firebase-admin");
 const multer = require("multer");
 const cors = require("cors");
 const path = require("path");
+const { v4: uuidv4 } = require("uuid");
+const snakeRoutes = require("./snakeRoutes");
+
 require("dotenv").config();
 
+// firebase
 const serviceAccount = JSON.parse(
   Buffer.from(
     process.env.FIREBASE_SERVICE_ACCOUNT_KEY_BASE64,
@@ -19,6 +23,7 @@ admin.initializeApp({
 });
 
 const db = admin.firestore();
+// firebase end
 
 const app = express();
 
@@ -81,6 +86,7 @@ app.post("/api/addUser", async (req, res) => {
   }
 });
 
+// get user
 app.post("/api/getUser", async (req, res) => {
   try {
     const { name } = req.body;
@@ -98,6 +104,8 @@ app.post("/api/getUser", async (req, res) => {
     return res.status(500).send("Internal Server Error");
   }
 });
+
+app.use("/api", snakeRoutes);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../../client/build", "index.html"));

@@ -10,7 +10,7 @@ export const Footer = () => {
         _hover={{ cursor: "pointer" }}
         onClick={() => window.location.assign("https://tomotime.app")}
       >
-        <Image src="icon.png" boxSize={8} borderRadius={10} />
+        <Image src="/icon.png" boxSize={8} borderRadius={10} />
         <Heading
           color="brand"
           fontFamily="body"

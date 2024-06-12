@@ -1,12 +1,23 @@
-import { HStack, Heading, Image } from "@chakra-ui/react";
+import { HStack, Heading, Text, VStack } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 export const TomotimeHeader = () => {
+  const navigate = useNavigate();
   return (
-    <HStack spacing={5} _hover={{ cursor: "pointer" }} onClick={() => alert()}>
-      <Image src="icon.png" boxSize={8} borderRadius={10} />
-      <Heading color="brand" fontWeight="semibold" size="lg">
-        tomotime
+    <VStack
+      mb={10}
+      _hover={{ cursor: "pointer" }}
+      onClick={() => navigate("/")}
+    >
+      <Heading fontFamily="heading" fontWeight="black">
+        Selfie Snake
       </Heading>
-    </HStack>
+      <HStack>
+        <Text>by</Text>
+        <Text display="inline" fontWeight="semibold" color="brand">
+          tomotime
+        </Text>
+      </HStack>
+    </VStack>
   );
 };

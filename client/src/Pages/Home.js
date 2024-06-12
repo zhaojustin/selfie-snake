@@ -12,12 +12,12 @@ export default function Home() {
         <Heading fontFamily="heading" fontWeight="black">
           Selfie Snake
         </Heading>
-        <Text fontSize="xl">
-          by{" "}
+        <HStack>
+          <Text>by</Text>
           <Text display="inline" fontWeight="semibold" color="brand">
             tomotime
           </Text>
-        </Text>
+        </HStack>
       </VStack>
 
       <Button onClick={() => navigate("/create")}>Create a snake!</Button>

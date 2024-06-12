@@ -17,11 +17,21 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import imageCompression from "browser-image-compression";
 import { addUser } from "../../api/users";
+import { addUserToSnake, createSnake } from "../../api/snakes";
+import { useNavigate, useParams } from "react-router-dom";
 
-export const UploadSelfie = ({ name, setUrl, onBack, onNext }) => {
+export const UploadSelfie = ({
+  name,
+  setUrl,
+  onBack,
+  parentSnakeId,
+  onNext,
+}) => {
   const [image, setImage] = useState(null); // image file
   const [loading, setLoading] = useState(false); // loading state
   const [preview, setPreview] = useState(""); // preview image url
+
+  const navigate = useNavigate();
 
   // handle change of input
   const handleChange = async (e) => {
@@ -63,12 +73,15 @@ export const UploadSelfie = ({ name, setUrl, onBack, onNext }) => {
       });
       setUrl(response.data.fileUrl);
 
-      // create user
-      const createUserResponse = await addUser(name, response.data.fileUrl);
-      if (createUserResponse.success) {
-        setLoading(false);
-        onNext();
-      } else throw new Error("Something went wrong while uploading image.");
+      // create snake with new image url
+      const newSnake = await addUserToSnake(
+        parentSnakeId,
+        name,
+        response.data.fileUrl
+      );
+      if (newSnake) {
+        navigate(`/snake/${newSnake.id}`);
+      }
     } catch (error) {
       console.error("Error uploading the file:", error);
     }
@@ -145,7 +158,12 @@ export const UploadSelfie = ({ name, setUrl, onBack, onNext }) => {
             </label>
           </>
         ) : (
-          <Spinner size="lg" m={5} color="brand" />
+          <VStack m={5}>
+            <Spinner size="lg" color="brand" />
+            <Text mt={2} color="brand">
+              Loading
+            </Text>
+          </VStack>
         )}
       </VStack>
     </motion.div>

@@ -1,4 +1,4 @@
-import { Heading, Icon, IconButton, Text, VStack } from "@chakra-ui/react";
+import { Heading, HStack, Text, VStack } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { UploadSelfie } from "./UploadSelfie";
 import { useEffect, useState } from "react";
@@ -35,6 +35,25 @@ export default function Create() {
     }
   }, [stage]);
 
+  async function createSnake() {
+    const response = await fetch("/api/createSnake", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username }),
+    });
+
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      throw new Error(`Error creating snake: ${errorMessage}`);
+    }
+
+    const data = await response.json();
+    if (data) setStage("next");
+    return data;
+  }
+
   return (
     <VStack mt={10}>
       <VStack
@@ -45,12 +64,12 @@ export default function Create() {
         <Heading fontFamily="heading" fontWeight="black">
           Selfie Snake
         </Heading>
-        <Text fontSize="xl">
-          by{" "}
+        <HStack>
+          <Text>by</Text>
           <Text display="inline" fontWeight="semibold" color="brand">
             tomotime
           </Text>
-        </Text>
+        </HStack>
       </VStack>
 
       {stage == "inputName" && (
@@ -73,7 +92,7 @@ export default function Create() {
           name={username}
           setUrl={setUrl}
           onBack={() => setStage("inputName")}
-          onNext={() => setStage("next")}
+          onNext={createSnake}
         />
       )}
       {stage == "next" && <Text>success</Text>}

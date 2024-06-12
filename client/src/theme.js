@@ -7,8 +7,7 @@ const theme = extendTheme({
   fonts: {
     body: "Figtree, sans-serif",
     heading: "Playfair Display, sans-serif",
-    display: "Comic-Sans-MS, sans-serif",
-    displayBold: "Comic-Sans-MS-Bold, sans-serif",
+    mono: "Reddit Mono, monospace",
   },
   components: {
     Button: {

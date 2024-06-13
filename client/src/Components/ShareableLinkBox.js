@@ -24,9 +24,9 @@ export const ShareableLinkBox = () => {
       render: () => (
         <Box>
           <Center>
-            <Box bg="brand" p={3} px={5} borderRadius={15}>
-              <Text color="white" fontWeight="semibold">
-                😊 Link copied!
+            <Box bg="blue.50" p={3} px={5} borderRadius={15}>
+              <Text color="brand" fontWeight="semibold">
+                Link copied!
               </Text>
             </Box>
           </Center>

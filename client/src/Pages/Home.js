@@ -2,9 +2,18 @@ import { Box, Button, HStack, Icon, Text, VStack } from "@chakra-ui/react";
 import { TomotimeHeader } from "../Components/Header";
 import { useNavigate } from "react-router-dom";
 import { FiLink, FiSmile, FiTrendingUp } from "react-icons/fi";
+import { useEffect } from "react";
+import Cookies from "js-cookie";
 
 export default function Home() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const hasSeenInstructions = Cookies.get("hasSeenInstructions");
+    if (!hasSeenInstructions) {
+      Cookies.set("hasSeenInstructions", "true", { expires: 7 });
+    }
+  });
 
   return (
     <VStack mb={10}>

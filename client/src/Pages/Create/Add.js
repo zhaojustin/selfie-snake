@@ -50,7 +50,6 @@ export default function Add() {
           onNext={() => {}}
         />
       )}
-      {stage == "next" && <Text>success</Text>}
     </VStack>
   );
 }

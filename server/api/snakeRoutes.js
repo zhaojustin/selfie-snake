@@ -1,9 +1,9 @@
-// routes.js
 const express = require("express");
 const router = express.Router();
-const db = require("./db"); // PostgreSQL db
+const db = require("./db");
 
-// Add User to Snake (Create New Snake with Optional Parent)
+// add user to snake given parent id
+// if parent id not given, then create new snake
 router.post("/addUserToSnake", async (req, res) => {
   const { parentSnakeId, username, imageUrl } = req.body;
   if (!username || !imageUrl)
@@ -62,53 +62,63 @@ router.post("/addUserToSnake", async (req, res) => {
   }
 });
 
-// Fetch Snake with Ancestors using Recursive CTE
-const fetchSnakeWithAncestors = async (snakeId) => {
+// get full hierarchy of snake
+// sorted by create time, descending
+router.get("/fetchFullHierarchy/:id", async (req, res) => {
+  const { id } = req.params;
+
   try {
     const result = await db.query(
       `
-      WITH RECURSIVE snake_hierarchy AS (
-        SELECT id, created_by, created_at, parent_snake_id, latest_children
-        FROM snakes
-        WHERE id = $1
-        UNION ALL
-        SELECT s.id, s.created_by, s.created_at, s.parent_snake_id, s.latest_children
-        FROM snakes s
-        INNER JOIN snake_hierarchy sh ON s.id = sh.parent_snake_id
-      )
-      SELECT * FROM snake_hierarchy ORDER BY created_at;
-    `,
-      [snakeId]
+        WITH RECURSIVE parent_hierarchy AS (
+          SELECT 
+              id, created_by, created_at, parent_snake_id, latest_children, 1 AS level
+          FROM snakes
+          WHERE id = $1
+          UNION ALL
+          SELECT 
+              s.id, s.created_by, s.created_at, s.parent_snake_id, s.latest_children, ph.level + 1
+          FROM snakes s
+          INNER JOIN parent_hierarchy ph ON ph.parent_snake_id = s.id
+        ),
+        descendant_hierarchy AS (
+          SELECT 
+              id, created_by, created_at, parent_snake_id, latest_children, 1 AS level
+          FROM snakes
+          WHERE id = $1
+          UNION ALL
+          SELECT 
+              s.id, s.created_by, s.created_at, s.parent_snake_id, s.latest_children, dh.level + 1
+          FROM snakes s
+          INNER JOIN descendant_hierarchy dh ON s.parent_snake_id = dh.id
+        )
+        SELECT * FROM parent_hierarchy
+        UNION
+        SELECT * FROM descendant_hierarchy
+        ORDER BY created_at DESC;
+      `,
+      [id]
     );
 
     const snakeHierarchy = result.rows;
 
+    // Fetch entries for each snake in the hierarchy
     for (const snake of snakeHierarchy) {
       const entriesResult = await db.query(
-        "SELECT * FROM entries WHERE snake_id = $1 ORDER BY created_at",
+        "SELECT * FROM entries WHERE snake_id = $1 ORDER BY created_at DESC",
         [snake.id]
       );
       snake.entries = entriesResult.rows;
     }
 
-    return snakeHierarchy.reverse(); // Reverse to get the hierarchy from root to the specified snake
+    res.status(200).json(snakeHierarchy);
   } catch (err) {
-    console.error("Error fetching snake with ancestors:", err);
-    throw err;
-  }
-};
-
-router.get("/fetchSnakeWithAncestors/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    const snakeHierarchy = await fetchSnakeWithAncestors(id);
-    res.json(snakeHierarchy);
-  } catch (err) {
+    console.error("Error fetching full hierarchy:", err);
     res.status(500).send("Internal Server Error");
   }
 });
 
-// Get Total Number of Children and Length of the Snake
+// get stats about snake
 router.get("/snakeStats/:snakeId", async (req, res) => {
   const { snakeId } = req.params;
 

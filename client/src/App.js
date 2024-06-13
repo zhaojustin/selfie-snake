@@ -10,6 +10,7 @@ import Add from "./Pages/Create/Add";
 import theme from "./theme";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Footer } from "./Components/Footer";
+import NotFound from "./Pages/NotFound";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path="/create" element={<Create />} />
               <Route path="/snake/:snakeId" element={<Snake />} />
               <Route path="/snake/:parentSnakeId/add" element={<Add />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Router>
         </Container>

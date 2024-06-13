@@ -81,7 +81,7 @@ export const UploadSelfie = ({
       );
       if (newSnake) {
         navigate(`/snake/${newSnake.id}`);
-      }
+      } // go to error page
     } catch (error) {
       console.error("Error uploading the file:", error);
     }

@@ -1,5 +1,7 @@
 import { HStack, Heading, Image, VStack, Text } from "@chakra-ui/react";
 import ReactGA from "react-ga4";
+const TRACKING_ID = "G-QJ3NR3QPZY"; // OUR_TRACKING_ID
+ReactGA.initialize(TRACKING_ID);
 
 export const Footer = () => {
   return (

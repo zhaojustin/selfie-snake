@@ -4,7 +4,7 @@ import "./index.css";
 import "./fonts.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 
 const TRACKING_ID = "G-ZBVRYYB0TF"; // OUR_TRACKING_ID
 ReactGA.initialize(TRACKING_ID);

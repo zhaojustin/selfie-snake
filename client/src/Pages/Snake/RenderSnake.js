@@ -40,7 +40,7 @@ const AddImageButton = ({ onAdd }) => {
           <VStack>
             <Icon as={FiArrowUp} color="gray.400" />
             <Text color="gray.400" fontWeight="semibold" fontSize="sm">
-              you go here!
+              add your selfie!
             </Text>
           </VStack>
         </Box>

@@ -10,38 +10,19 @@ import { ReturningUser } from "./ReturningUser";
 export default function Create() {
   const navigate = useNavigate();
 
-  const images = [
-    "https://via.placeholder.com/100",
-    "https://via.placeholder.com/100",
-    "https://via.placeholder.com/100",
-  ];
-
   const [url, setUrl] = useState("");
   const [username, setUsername] = useState("");
 
   const [stage, setStage] = useState("inputName");
 
-  useEffect(() => {
-    if (stage == "inputName_done") {
-      // check if user exists already
-      const checkUser = async () => {
-        const response = await getUser(username);
-        if (response) {
-          setUrl(response.imageUrl);
-          setStage("returningUser");
-        } else setStage("upload");
-      };
-      checkUser();
-    }
-  }, [stage]);
-
   async function createSnake() {
-    const response = await fetch("/api/createSnake", {
+    const imageUrl = url;
+    const response = await fetch("/api/addUserToSnake", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username }),
+      body: JSON.stringify({ username, imageUrl }),
     });
 
     if (!response.ok) {
@@ -49,9 +30,11 @@ export default function Create() {
       throw new Error(`Error creating snake: ${errorMessage}`);
     }
 
-    const data = await response.json();
-    if (data) setStage("next");
-    return data;
+    const newSnake = await response.json();
+    if (newSnake) {
+      navigate("/snake/" + newSnake.id);
+    }
+    return newSnake;
   }
 
   return (
@@ -76,15 +59,7 @@ export default function Create() {
         <InputName
           name={username}
           setName={setUsername}
-          onNextStage={() => setStage("inputName_done")}
-        />
-      )}
-      {stage == "returningUser" && (
-        <ReturningUser
-          name={username}
-          imageUrl={url}
-          onRetake={() => setStage("upload")}
-          onNext={() => setStage("next")}
+          onNextStage={() => setStage("upload")}
         />
       )}
       {stage == "upload" && (

@@ -40,9 +40,6 @@ export const ShareableLinkBox = () => {
       <Text fontSize="lg" color="brand" fontWeight="semibold">
         Add your friends to the snake!
       </Text>
-      <Text fontSize="md" mt={1} color="brand" opacity={0.75}>
-        Let's see how long it can get...
-      </Text>
 
       <Flex
         bg="white"

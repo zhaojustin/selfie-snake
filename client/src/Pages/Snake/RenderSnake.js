@@ -51,7 +51,14 @@ const ImageRow = ({ images, offset, onAdd }) => {
               </Center>
             </Box>
           ) : (
-            <>
+            <Box
+              _hover={{ cursor: "pointer" }}
+              onClick={() =>
+                window.location.assign(
+                  "https://instagram.com/" + image.created_by
+                )
+              }
+            >
               <Image
                 src={image.imageUrl}
                 boxSize="100px"
@@ -59,7 +66,7 @@ const ImageRow = ({ images, offset, onAdd }) => {
                 borderRadius={25}
               />
               <Text mt={2}>{image.created_by}</Text>
-            </>
+            </Box>
           )}
         </Box>
       ))}

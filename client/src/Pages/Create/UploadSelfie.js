@@ -80,7 +80,7 @@ export const UploadSelfie = ({
         response.data.fileUrl
       );
       if (newSnake) {
-        navigate(`/snake/${newSnake.id}`);
+        navigate(`/snake/${parentSnakeId}`);
       } // go to error page
     } catch (error) {
       console.error("Error uploading the file:", error);

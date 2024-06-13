@@ -8,10 +8,6 @@ export default function Add() {
   const navigate = useNavigate();
   const { parentSnakeId } = useParams();
 
-  useEffect(() => {
-    console.log([parentSnakeId]);
-  }, [parentSnakeId]);
-
   const [url, setUrl] = useState("");
   const [username, setUsername] = useState("");
   const [stage, setStage] = useState("inputName");

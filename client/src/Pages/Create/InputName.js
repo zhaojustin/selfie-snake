@@ -79,7 +79,7 @@ export const InputName = ({ name, setName, onNextStage }) => {
         </InputGroup>
         <Text fontSize="sm" color="gray.600" as="i" pt={10} maxW={250}>
           We are not affiliated with Instagram in any way and will not use this
-          for any reason other than identifying you for Selfie Snake.
+          for any reason.
         </Text>
       </VStack>
     </motion.div>

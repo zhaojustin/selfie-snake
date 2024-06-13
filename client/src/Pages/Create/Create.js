@@ -38,7 +38,7 @@ export default function Create() {
   }
 
   return (
-    <VStack mt={10}>
+    <VStack my={10}>
       <VStack
         mb={10}
         _hover={{ cursor: "pointer" }}
@@ -70,7 +70,6 @@ export default function Create() {
           onNext={createSnake}
         />
       )}
-      {stage == "next" && <Text>success</Text>}
 
       {/* <ZigzagPattern imageUrls={images} /> */}
     </VStack>

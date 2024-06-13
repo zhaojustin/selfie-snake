@@ -6,8 +6,8 @@ import { TomotimeHeader } from "../../Components/Header";
 import { ShareableLinkBox } from "../../Components/ShareableLinkBox";
 
 export default function Snake({}) {
-  const navigate = useNavigate();
   const { snakeId } = useParams();
+  const navigate = useNavigate();
   const [snake, setSnake] = useState(null);
   const [loading, setLoading] = useState(true);
 

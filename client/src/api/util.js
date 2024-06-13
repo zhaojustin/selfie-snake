@@ -1,1 +1,1 @@
-export const baseUrl = "https://selfiesnake.com";
+export const baseUrl = "www.selfiesnake.com";
